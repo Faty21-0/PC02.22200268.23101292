@@ -1,56 +1,94 @@
 import { useState } from 'react';
-import { loginUser } from './AuthService'; // <--- Aquí importamos la lógica nueva
+import { loginUser } from './AuthService';
 
 export default function LoginPage({ onLogin }) {
   const [email, setEmail] = useState('guerrero@peru.com');
   const [password, setPassword] = useState('12345678');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     try {
-      // Usamos la función que creamos en el otro archivo
       await loginUser(email, password);
-      
-      alert('¡Login Exitoso!');
       if(onLogin) onLogin();
     } catch (err) {
       setError(err.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // ESTILOS (Los mismos que ya te gustaron)
+  // ESTILOS RETRO DIGIMON
   const styles = {
     container: {
-      display: 'flex', justifyContent: 'center', alignItems: 'center',
-      minHeight: '100vh', backgroundColor: '#f0f2f5',
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '20px'
     },
     loginBox: {
-      backgroundColor: 'white', padding: '2rem', borderRadius: '8px',
-      boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)', width: '100%', maxWidth: '400px', textAlign: 'center',
+      backgroundColor: 'rgba(0, 20, 60, 0.9)', // Fondo oscuro transparente
+      padding: '2.5rem',
+      borderRadius: '0px', // Bordes cuadrados pixelados
+      border: '4px solid #00ffcc', // Borde cian brillante
+      boxShadow: '0 0 20px #00ffcc, inset 0 0 20px rgba(0, 255, 204, 0.2)', // Resplandor de neón
+      width: '100%', maxWidth: '450px', textAlign: 'center',
+      imageRendering: 'pixelated'
     },
-    title: { color: '#1a1a1a', marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: '600' },
-    form: { display: 'flex', flexDirection: 'column', gap: '1rem' },
-    input: { padding: '0.75rem', borderRadius: '4px', border: '1px solid #ccc', fontSize: '1rem' },
+    title: { 
+      color: '#ffcc00', // Amarillo dorado retro
+      marginBottom: '2rem', 
+      fontSize: '2rem', 
+      fontFamily: "'Press Start 2P', cursive", // Fuente de título pixelada
+      textShadow: '4px 4px #ff6600' // Sombra naranja
+    },
+    form: { display: 'flex', flexDirection: 'column', gap: '1.5rem' },
+    input: { 
+      padding: '1rem', 
+      backgroundColor: '#001a33', 
+      border: '2px solid #005580', 
+      color: '#00ffcc', 
+      fontSize: '1.2rem', 
+      fontFamily: "'VT323', monospace",
+      outline: 'none'
+    },
     button: {
-      padding: '0.75rem', backgroundColor: '#007bff', color: 'white',
-      border: 'none', borderRadius: '4px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer',
+      padding: '1rem', 
+      backgroundColor: '#ff6600', // Naranja Digivice
+      color: 'white',
+      border: '4px solid #ffcc00', // Borde amarillo pixelado
+      fontSize: '1.5rem', 
+      fontFamily: "'VT323', monospace",
+      cursor: 'pointer',
+      boxShadow: '4px 4px 0px #993300', // Sombra dura pixelada
+      transform: 'translate(-2px, -2px)',
+      transition: 'all 0.1s'
     },
-    error: { color: '#dc3545', marginTop: '1rem', fontSize: '0.9rem' }
+    buttonActive: { // Para simular el click
+      boxShadow: '0px 0px 0px #993300',
+      transform: 'translate(2px, 2px)',
+    },
+    error: { color: '#ff3333', marginTop: '1rem', fontSize: '1.1rem', textShadow: '0 0 5px red' }
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.loginBox}>
-        <h2 style={styles.title}>Iniciar Sesión</h2>
+        <h2 style={styles.title}>ACCESO DIGITAL</h2>
         <form onSubmit={handleLogin} style={styles.form}>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Correo electrónico" style={styles.input} required />
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Contraseña" style={styles.input} required />
-          <button type="submit" style={styles.button}>Ingresar</button>
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="INGRESE CORREO" style={styles.input} required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="INGRESE PASSWORD" style={styles.input} required />
+          <button 
+            type="submit" 
+            style={styles.button}
+            onMouseDown={(e) => { e.target.style.transform = 'translate(2px, 2px)'; e.target.style.boxShadow = '0px 0px 0px #993300'; }}
+            onMouseUp={(e) => { e.target.style.transform = 'translate(-2px, -2px)'; e.target.style.boxShadow = '4px 4px 0px #993300'; }}
+            disabled={isLoading}
+          >
+            {isLoading ? 'CONECTANDO...' : 'INGRESAR AL DIGIMUNDO'}
+          </button>
         </form>
-        {error && <p style={styles.error}>{error}</p>}
+        {error && <p style={styles.error}>ERROR: {error}</p>}
       </div>
     </div>
   );

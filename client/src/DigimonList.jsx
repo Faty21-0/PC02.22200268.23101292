@@ -26,13 +26,19 @@ export default function DigimonList() {
     setFilteredDigimons(filtro);
   };
 
-  if (loading) return <h2 style={{textAlign: 'center', marginTop: '20px'}}>Cargando Digimons...</h2>;
+  if (loading) return <h2 style={{textAlign: 'center', marginTop: '50px', fontSize: '2rem', color: '#00ffcc', textShadow: '0 0 10px #00ffcc'}}>CARGANDO DATOS...</h2>;
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial', backgroundColor: '#f4f4f9', minHeight: '100vh' }}>
-      <h1 style={{ textAlign: 'center', color: '#007bff' }}>Lista de Digimons</h1>
+    <div style={{ padding: '30px' }}>
+      <h1 style={{ 
+        textAlign: 'center', color: '#ffcc00', fontSize: '3rem', 
+        fontFamily: "'Press Start 2P', cursive", marginBottom: '40px',
+        textShadow: '4px 4px #ff6600'
+      }}>
+        BASE DE DATOS DIGIMON
+      </h1>
       <FilterBar onSearch={handleSearch} />
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '20px' }}>
         {filteredDigimons.map((digi) => (
           <DigimonCard key={digi.name} name={digi.name} img={digi.img} level={digi.level} />
         ))}
