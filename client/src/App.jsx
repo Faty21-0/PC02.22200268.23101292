@@ -1,9 +1,9 @@
-import LoginPage from './LoginPage';
+import DigimonList from './DigimonList';
 
 function App() {
   return (
     <div>
-      <LoginPage />
+      <DigimonList />
     </div>
   );
 }
